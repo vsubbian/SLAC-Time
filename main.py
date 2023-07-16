@@ -15,9 +15,6 @@ import pandas as pd
 # GC for garbage collection to manage memory
 import gc
 
-# Time for time-related functions
-import time
-
 # TQDM for progress bar
 from tqdm import tqdm
 
@@ -218,12 +215,9 @@ c.clean_lab_data()
 c.clean_vital_data()
 df = pd.read_csv(DATA_PATH + 'time_series_data.csv')
 
-
-# preprocessing of data
+# Adjusting the length of time series
 max_len = 120
 min_len = 0 
-
-# Adjusting the length of time series
 num_time_steps = min(max(df.DLTimeSinceInj), max_len)
 df = df[df.DLTimeSinceInj < num_time_steps]
 df = df[min_len < df.DLTimeSinceInj]
@@ -237,7 +231,6 @@ df = df[df.Guid.isin(guid)]
 
 #Replacing patient IDs with patient indices and variable names with variable indices
 varis = sorted(list(set(df['variable'])))
-num_features = len(varis)
 pat_to_ind = inv_list(guid)
 var_to_ind = inv_list(varis)
 
@@ -320,6 +313,7 @@ fore_values_ip = []
 fore_varis_ip = []
 fore_op = []
 fore_inds = []
+
 def f(x):
     mask = [0 for i in range(V)]
     values = [0 for i in range(V)]
@@ -381,9 +375,6 @@ target_times_ip = []
 target_values_ip = []
 target_varis_ip = []
 target_inds = []
-
-def pad(x):
-     return x+[0]*(input_max_len-len(x))
     
 df = df.groupby('ts_ind').agg({'vind':list, 'hour':list, 'value':list}).reset_index()
 
@@ -513,7 +504,6 @@ deepcluster = clustering.__dict__['Kmeans'](3)
 # training STraTS
 cluster_assignments=[]
 for iteration in range(0,500):
-    start=time.time()
     tf.keras.backend.clear_session()
     model_features = Model(model.input, model.layers[-2].output)
     features = model_features.predict(dataset)
@@ -521,7 +511,6 @@ for iteration in range(0,500):
     labeled_dataset = clustering.cluster_assign(deepcluster.patients_lists, dataset)
     
     # Building new inputs and outputs
-    start=time.time()
     target_input=dataset
     target_output = np.array([labeled_dataset.ptns[i][1] for i in range(len(labeled_dataset.ptns))])
     target_train_op_tensor = tf.constant(target_output[target_train_ind])
@@ -542,9 +531,6 @@ for iteration in range(0,500):
     cluster_assignments.append(clustering.arrange_clustering(deepcluster.patients_lists))
     with open('cluster_assignments.npy', 'wb') as f:
         np.save(f, cluster_assignments)
-
-    end=time.time()
-    print("elapsed time of performing target task for the associated iteration:", end-start)
 
 
 model.save('target_model_weights_architecture.h5')
