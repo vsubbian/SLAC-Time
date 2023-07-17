@@ -4,6 +4,7 @@ This code implements the SLAC-Time approach for clustering multivariate time ser
 ## Description
 SLAC-Time is a novel approach developed for clustering multivariate time series data with missing values without resorting to data imputation and integration methods. It utilizes a self-supervised Transformer to extract representations from the input data, performs clustering on the learned representations, and then uses the cluster assignments as labels to retrain the network. This process is repeated iteratively to improve the clusters.
 
+This particular implementation of SLAC-Time is designed to handle a dataset that includes both multivariate time series data with missing values and non-temporal data. Another version of SLAC-Time, presented in a separate work, is tailored to datasets comprising solely of multivariate time series data with missing values.
 
 Specifically, this implementation follows these steps:
 
