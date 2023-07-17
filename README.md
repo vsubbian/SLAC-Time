@@ -132,9 +132,15 @@ SLAC-Time implementation relies on the following Python libraries:
 
 ## Data Source
 
-The utilized data for this project is sourced from the [TRACK-TBI dataset](https://tracktbi.ucsf.edu/). This dataset comprises multivariate clinical time series data pertinent to patients diagnosed with Traumatic Brain Injury (TBI).
+The data utilized for this project is sourced from the TRACK-TBI dataset. This dataset comprises multivariate clinical time series data pertinent to patients diagnosed with Traumatic Brain Injury (TBI).
 
-The raw dataset files are stored under the `data/` directory. Upon preprocessing, the refined data is stored in `time_series_data.csv` for further use.
+The raw dataset files should be stored under the `data/` directory. They are in four CSV files: `NSF U01 Clinical Data.csv`, `NSF U01 GCS and Pupillary Data.csv`, `NSF U01 Lab Data.csv`, and `NSF U01 Vitals Data.csv`. 
+
+Upon preprocessing, the refined data is stored in `time_series_data.csv` for further use.
+
+### Important Note
+
+Due to NSF data sharing policies, the raw datasets are not included in this GitHub repository. To use this code, please obtain the dataset directly from the relevant authorities and place them in the appropriate directory as mentioned above.
 
 ## How to Execute the Script
 
